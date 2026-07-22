@@ -281,17 +281,8 @@ async function apiRequest(path, options = {}) {
   return response.json();
 }
 
-function setBackendStatus(status, label) {
-  const badge = $("#api-status");
-  if (!badge) return;
-  badge.classList.remove("online", "offline");
-  if (status) badge.classList.add(status);
-  badge.textContent = label;
-}
-
 async function loadBackendData() {
   if (window.location.protocol === "file:") {
-    setBackendStatus("offline", "Static demo");
     return false;
   }
 
@@ -308,59 +299,14 @@ async function loadBackendData() {
     complianceItems = data.complianceItems || complianceItems;
     evidencePack = data.evidencePack || evidencePack;
     lessons = data.lessons || lessons;
-    setBackendStatus("online", "Backend online");
     return true;
   } catch (error) {
-    setBackendStatus("offline", "Demo fallback");
     return false;
   }
 }
 
-function initCursor() {
-  const ring = $(".custom-cursor");
-  const dot = $(".custom-cursor-dot");
-  if (!ring || !dot || window.matchMedia("(pointer: coarse)").matches) return;
-
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let ringX = mouseX;
-  let ringY = mouseY;
-
-  const moveCursor = () => {
-    ringX += (mouseX - ringX) * 0.18;
-    ringY += (mouseY - ringY) * 0.18;
-    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
-    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-    requestAnimationFrame(moveCursor);
-  };
-
-  window.addEventListener("mousemove", (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-    document.body.classList.add("cursor-ready");
-  });
-
-  window.addEventListener("mouseleave", () => document.body.classList.remove("cursor-ready"));
-  window.addEventListener("mouseenter", () => document.body.classList.add("cursor-ready"));
-
-  document.addEventListener("mouseover", (event) => {
-    if (event.target.closest("button, input, .nav-item, .prompt-button")) {
-      document.body.classList.add("cursor-hover");
-    }
-  });
-
-  document.addEventListener("mouseout", (event) => {
-    if (event.target.closest("button, input, .nav-item, .prompt-button")) {
-      document.body.classList.remove("cursor-hover");
-    }
-  });
-
-  moveCursor();
-}
-
 function initScrollReveal() {
   const revealSelectors = [
-    ".hero-strip",
     ".metric",
     ".panel",
     ".feed-item",
@@ -598,9 +544,8 @@ async function askCopilot(query) {
       answer = payload.answer || answer;
       retrievedDocuments = payload.retrievedDocuments || [];
       source = payload.servedBy || "OpsBrain backend";
-      setBackendStatus("online", "Backend online");
     } catch (error) {
-      setBackendStatus("offline", "Demo fallback");
+      source = "Local fallback";
     }
   }
 
@@ -649,9 +594,7 @@ async function runDemo() {
       });
       documents = [payload.document, ...documents.filter((doc) => doc.id !== payload.document.id)];
       relationships = payload.graphLinks ? relationships : relationships;
-      setBackendStatus("online", "Ingested via API");
     } catch (error) {
-      setBackendStatus("offline", "Demo fallback");
     }
   }
   setTimeout(() => {
@@ -662,7 +605,6 @@ async function runDemo() {
 }
 
 async function init() {
-  initCursor();
   initScrollProgress();
   await loadBackendData();
   renderMetrics();
