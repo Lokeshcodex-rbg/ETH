@@ -17,6 +17,7 @@
   --amber: #9d713d;
   --red: #9a5742;
   --green: #647757;
+  --cursor-brown: #6f3f1d;
   --shadow: 0 18px 42px rgba(65, 48, 28, 0.11);
 }
 
@@ -35,7 +36,7 @@ body {
     radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.94), transparent 34%),
     linear-gradient(135deg, #fffaf1 0%, #f2e4d1 100%);
   color: var(--ink);
-  cursor: auto;
+  cursor: none;
   font-family: Inter, Aptos, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   letter-spacing: 0;
   text-rendering: geometricPrecision;
@@ -51,7 +52,63 @@ a,
 input,
 .nav-item,
 .prompt-button {
-  cursor: pointer;
+  cursor: none;
+}
+
+.custom-cursor,
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.custom-cursor {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(111, 63, 29, 0.76);
+  border-radius: 50%;
+  background: rgba(255, 247, 232, 0.42);
+  box-shadow:
+    0 0 0 5px rgba(255, 247, 232, 0.38),
+    0 10px 24px rgba(111, 63, 29, 0.12);
+  transition:
+    opacity 140ms ease,
+    width 160ms ease,
+    height 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cursor-brown);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+body.cursor-ready .custom-cursor,
+body.cursor-ready .custom-cursor-dot {
+  opacity: 1;
+}
+
+body.cursor-hover .custom-cursor {
+  width: 44px;
+  height: 44px;
+  border-color: rgba(95, 57, 29, 0.92);
+  background: rgba(244, 235, 220, 0.58);
+  box-shadow:
+    0 0 0 7px rgba(255, 247, 232, 0.46),
+    0 14px 30px rgba(111, 63, 29, 0.18);
+}
+
+body.cursor-hover .custom-cursor-dot {
+  transform: translate3d(-50%, -50%, 0) scale(0.72);
 }
 
 .scroll-progress {
@@ -815,5 +872,21 @@ h2 {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+}
+
+@media (pointer: coarse) {
+  body,
+  button,
+  a,
+  input,
+  .nav-item,
+  .prompt-button {
+    cursor: auto;
+  }
+
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none;
   }
 }
