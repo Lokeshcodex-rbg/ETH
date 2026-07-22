@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AssetIQ Brain | Industrial Knowledge Intelligence</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="custom-cursor" aria-hidden="true"></div>
+    <div class="custom-cursor-dot" aria-hidden="true"></div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">AQ</div>
+          <div>
+            <strong>AssetIQ Brain</strong>
+            <span>Industrial Knowledge Intelligence</span>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Main sections">
+          <button class="nav-item active" data-view="command"><span>01</span> Command Center</button>
+          <button class="nav-item" data-view="ingestion"><span>02</span> Ingestion</button>
+          <button class="nav-item" data-view="copilot"><span>03</span> Expert Copilot</button>
+          <button class="nav-item" data-view="maintenance"><span>04</span> Maintenance RCA</button>
+          <button class="nav-item" data-view="compliance"><span>05</span> Compliance</button>
+          <button class="nav-item" data-view="lessons"><span>06</span> Lessons Learned</button>
+        </nav>
+
+        <div class="plant-card">
+          <span class="eyebrow">Plant Context</span>
+          <strong>Vadodara Process Unit 3</strong>
+          <p>Continuous polymer line. 128 critical assets, 1,984 records, 42 linked actions.</p>
+          <div class="plant-stats">
+            <span>7 systems</span>
+            <span>93% indexed</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">Unified Asset & Operations Brain</span>
+            <h1>Turn scattered plant documents into cited answers, RCA actions, compliance evidence, and reusable expert knowledge.</h1>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" id="run-demo" title="Run demo ingestion">Run</button>
+            <button class="primary-button" id="open-copilot">Ask Copilot</button>
+          </div>
+        </header>
+
+        <section class="hero-strip" aria-label="Prototype scope">
+          <div>
+            <strong>Built for the hackathon challenge</strong>
+            <p>Universal document ingestion, industrial entity extraction, knowledge graph linkage, RAG-style cited answers, maintenance RCA, compliance gap detection, and lessons learned intelligence.</p>
+          </div>
+          <div class="scope-chips">
+            <span>PDF</span>
+            <span>P&ID</span>
+            <span>CMMS</span>
+            <span>SOP</span>
+            <span>QMS</span>
+            <span>Email</span>
+          </div>
+        </section>
+
+        <section class="view active" id="view-command">
+          <div class="metrics-grid" id="metrics"></div>
+          <div class="split-layout">
+            <section class="panel graph-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Live Knowledge Graph</span>
+                  <h2>Equipment, documents, incidents, regulations, and evidence linked by AI extraction.</h2>
+                </div>
+                <span class="status-pill">Auto-updating</span>
+              </div>
+              <svg id="knowledge-graph" viewBox="0 0 960 470" role="img" aria-label="Industrial knowledge graph"></svg>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Priority Intelligence</span>
+                  <h2>What needs attention now</h2>
+                </div>
+              </div>
+              <div id="priority-feed" class="feed"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-ingestion">
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">Universal Document Ingestion</span>
+              <h2>Process plant records into one industrial ontology.</h2>
+            </div>
+            <button class="primary-button" id="ingest-docs">Ingest Demo Batch</button>
+          </div>
+          <div class="connector-grid" id="connector-grid"></div>
+          <div class="pipeline" id="pipeline"></div>
+          <div class="document-grid" id="document-grid"></div>
+        </section>
+
+        <section class="view" id="view-copilot">
+          <div class="copilot-layout">
+            <section class="panel chat-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Expert Knowledge Copilot</span>
+                  <h2>Ask operational, maintenance, engineering, or compliance questions with cited evidence.</h2>
+                </div>
+              </div>
+              <div id="chat-log" class="chat-log"></div>
+              <form id="query-form" class="query-form">
+                <input id="query-input" type="text" autocomplete="off" value="Why is pump P-204 showing repeat seal failures?" />
+                <button class="primary-button" type="submit">Ask</button>
+              </form>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="eyebrow">Field Queries</span>
+                  <h2>Fast prompts for technicians and engineers</h2>
+                </div>
+              </div>
+              <div class="prompt-list" id="prompt-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-maintenance">
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">Maintenance Intelligence & RCA</span>
+              <h2>Connect failures, operating conditions, work orders, inspections, and OEM instructions.</h2>
+            </div>
+          </div>
+          <div class="agent-grid" id="maintenance-grid"></div>
+        </section>
+
+        <section class="view" id="view-compliance">
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">Quality & Regulatory Compliance</span>
+              <h2>Map requirements to procedures, equipment states, inspections, and audit evidence.</h2>
+            </div>
+          </div>
+          <div class="compliance-board" id="compliance-board"></div>
+          <section class="panel evidence-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="eyebrow">Audit Evidence Package</span>
+                <h2>Generated from linked source records</h2>
+              </div>
+              <span class="status-pill">Draft ready</span>
+            </div>
+            <div id="evidence-pack" class="evidence-pack"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-lessons">
+          <div class="section-header">
+            <div>
+              <span class="eyebrow">Lessons Learned & Failure Intelligence</span>
+              <h2>Find repeated patterns across incidents, audits, quality deviations, and near misses.</h2>
+            </div>
+          </div>
+          <div class="lessons-board" id="lessons-board"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
