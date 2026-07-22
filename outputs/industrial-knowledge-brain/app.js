@@ -1,4 +1,4 @@
-const documents = [
+let documents = [
   {
     id: "PID-204-REV-C",
     title: "P&ID Cooling Water Loop CW-17",
@@ -81,14 +81,14 @@ const documents = [
   },
 ];
 
-const connectors = [
+let connectors = [
   ["Engineering Vault", "412 drawings", "P&IDs, isometrics, datasheets"],
   ["CMMS", "638 work orders", "Failures, repairs, spares, technicians"],
   ["QMS", "286 procedures", "SOPs, CAPA, quality deviations"],
   ["Compliance Library", "149 controls", "OISD, PESO, Factory Act, environment"],
 ];
 
-const relationships = [
+let relationships = [
   ["P-204", "WO-8841", "repeat failure"],
   ["P-204", "PID-204-REV-C", "shown on"],
   ["P-204", "OEM-P204-11", "manual"],
@@ -104,14 +104,14 @@ const relationships = [
   ["CAPA", "seal failure", "may apply"],
 ];
 
-const metrics = [
+let metrics = [
   ["1,984", "records indexed"],
   ["7", "systems unified"],
   ["312", "asset tags linked"],
   ["73%", "faster time-to-answer"],
 ];
 
-const priorities = [
+let priorities = [
   {
     title: "P-204 repeat seal failure pattern detected",
     text: "Work order, OEM limits, SOP checks, and a prior near miss point to suction restriction and vibration after startup.",
@@ -130,7 +130,7 @@ const priorities = [
   },
 ];
 
-const pipelineSteps = [
+let pipelineSteps = [
   ["Ingest", "PDFs, scans, spreadsheets, drawings, email exports, and CMMS records enter a single intake queue."],
   ["OCR + Parse", "Document AI extracts tables, handwriting, drawing callouts, tags, dates, units, and procedure sections."],
   ["Entity Link", "Equipment tags, lines, people, regulations, quality deviations, and work orders are normalized."],
@@ -138,7 +138,7 @@ const pipelineSteps = [
   ["Agents", "Copilot, RCA, compliance, and lessons-learned agents retrieve cited context at the point of need."],
 ];
 
-const prompts = [
+let prompts = [
   "Why is pump P-204 showing repeat seal failures?",
   "What compliance evidence is missing for PI-204?",
   "Which SOP steps matter before restarting P-204?",
@@ -146,7 +146,7 @@ const prompts = [
   "Should this repeat repair trigger CAPA?",
 ];
 
-const maintenanceAgents = [
+let maintenanceAgents = [
   {
     title: "P-204 Seal Failure RCA",
     score: 87,
@@ -173,7 +173,7 @@ const maintenanceAgents = [
   },
 ];
 
-const complianceItems = [
+let complianceItems = [
   {
     title: "OISD rotating equipment evidence",
     status: "Gap",
@@ -197,7 +197,7 @@ const complianceItems = [
   },
 ];
 
-const evidencePack = [
+let evidencePack = [
   {
     title: "Requirement",
     text: "OISD rotating equipment checklist requires current calibration proof and inspection closure evidence.",
@@ -215,7 +215,7 @@ const evidencePack = [
   },
 ];
 
-const lessons = [
+let lessons = [
   {
     title: "Restart vibration after handover",
     score: 84,
@@ -236,7 +236,7 @@ const lessons = [
   },
 ];
 
-const answers = {
+let answers = {
   seal: {
     confidence: 87,
     text: "P-204 is most likely failing seals because the suction side is periodically restricted. The work order reports a clogged suction strainer and vibration spike; the OEM manual says seal life drops below 1.8 bar suction pressure or above 7 mm/s vibration. A prior near miss shows the same restart pattern, so the immediate field checks are strainer DP, seal flush, suction pressure, and vibration trending.",
@@ -271,6 +271,50 @@ const answers = {
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+async function apiRequest(path, options = {}) {
+  const response = await fetch(path, {
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    ...options,
+  });
+  if (!response.ok) throw new Error(`API ${path} failed with ${response.status}`);
+  return response.json();
+}
+
+function setBackendStatus(status, label) {
+  const badge = $("#api-status");
+  if (!badge) return;
+  badge.classList.remove("online", "offline");
+  if (status) badge.classList.add(status);
+  badge.textContent = label;
+}
+
+async function loadBackendData() {
+  if (window.location.protocol === "file:") {
+    setBackendStatus("offline", "Static demo");
+    return false;
+  }
+
+  try {
+    const data = await apiRequest("/api/dashboard");
+    documents = data.documents || documents;
+    connectors = data.connectors || connectors;
+    relationships = data.relationships || relationships;
+    metrics = data.metrics || metrics;
+    priorities = data.priorities || priorities;
+    pipelineSteps = data.pipelineSteps || pipelineSteps;
+    prompts = data.prompts || prompts;
+    maintenanceAgents = data.maintenanceAgents || maintenanceAgents;
+    complianceItems = data.complianceItems || complianceItems;
+    evidencePack = data.evidencePack || evidencePack;
+    lessons = data.lessons || lessons;
+    setBackendStatus("online", "Backend online");
+    return true;
+  } catch (error) {
+    setBackendStatus("offline", "Demo fallback");
+    return false;
+  }
+}
 
 function initCursor() {
   const ring = $(".custom-cursor");
@@ -540,8 +584,26 @@ function answerFor(query) {
   return answers.default;
 }
 
-function askCopilot(query) {
-  const answer = answerFor(query);
+async function askCopilot(query) {
+  let answer = answerFor(query);
+  let retrievedDocuments = [];
+  let source = "Local fallback";
+
+  if (window.location.protocol !== "file:") {
+    try {
+      const payload = await apiRequest("/api/query", {
+        method: "POST",
+        body: JSON.stringify({ query }),
+      });
+      answer = payload.answer || answer;
+      retrievedDocuments = payload.retrievedDocuments || [];
+      source = payload.servedBy || "AssetIQ backend";
+      setBackendStatus("online", "Backend online");
+    } catch (error) {
+      setBackendStatus("offline", "Demo fallback");
+    }
+  }
+
   const chat = $("#chat-log");
   chat.insertAdjacentHTML("beforeend", `<div class="message user">${query}</div>`);
   chat.insertAdjacentHTML(
@@ -550,8 +612,10 @@ function askCopilot(query) {
       <div class="answer">
         <span class="confidence">${answer.confidence}% confidence</span>
         <p>${answer.text}</p>
+        <span class="eyebrow">${source}</span>
         <div class="citation-list">
           ${answer.citations.map((citation) => `<div class="citation">${citation}</div>`).join("")}
+          ${retrievedDocuments.map((doc) => `<div class="citation">Retrieved: ${doc.id} - ${doc.title}</div>`).join("")}
         </div>
       </div>
     </div>`,
@@ -567,16 +631,40 @@ function switchView(view) {
   });
 }
 
-function runDemo() {
+async function runDemo() {
   switchView("ingestion");
   renderPipeline(false);
-  setTimeout(() => renderPipeline(true), 450);
+  if (window.location.protocol !== "file:") {
+    try {
+      const payload = await apiRequest("/api/ingest", {
+        method: "POST",
+        body: JSON.stringify({
+          title: "Uploaded Shift Handover Note: P-204 restart",
+          type: "Email / Field Note",
+          source: "Mobile Intake",
+          text: "Night shift reported P-204 vibration after restart. PI-204 calibration evidence still missing. Seal flush visually confirmed by operator.",
+          entities: ["P-204", "PI-204", "seal flush", "vibration"],
+          risk: "warn",
+        }),
+      });
+      documents = [payload.document, ...documents.filter((doc) => doc.id !== payload.document.id)];
+      relationships = payload.graphLinks ? relationships : relationships;
+      setBackendStatus("online", "Ingested via API");
+    } catch (error) {
+      setBackendStatus("offline", "Demo fallback");
+    }
+  }
+  setTimeout(() => {
+    renderPipeline(true);
+    renderDocuments();
+  }, 450);
   setTimeout(() => switchView("command"), 950);
 }
 
-function init() {
+async function init() {
   initCursor();
   initScrollProgress();
+  await loadBackendData();
   renderMetrics();
   renderPriorityFeed();
   renderConnectors();
@@ -589,7 +677,7 @@ function init() {
   renderEvidencePack();
   renderLessons();
   initScrollReveal();
-  askCopilot("Why is pump P-204 showing repeat seal failures?");
+  await askCopilot("Why is pump P-204 showing repeat seal failures?");
 
   $$(".nav-item").forEach((item) => item.addEventListener("click", () => switchView(item.dataset.view)));
   $("#open-copilot").addEventListener("click", () => switchView("copilot"));

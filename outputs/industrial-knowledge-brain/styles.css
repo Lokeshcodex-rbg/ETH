@@ -265,8 +265,45 @@ body.cursor-hover .custom-cursor {
 .top-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.api-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: rgba(255, 250, 241, 0.76);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.api-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 4px rgba(157, 113, 61, 0.12);
+}
+
+.api-status.online::before {
+  background: var(--green);
+  box-shadow: 0 0 0 4px rgba(100, 119, 87, 0.14);
+}
+
+.api-status.offline::before {
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(154, 87, 66, 0.14);
 }
 
 .primary-button,
