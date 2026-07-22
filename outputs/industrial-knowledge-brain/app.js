@@ -132,7 +132,7 @@ let priorities = [
 
 let pipelineSteps = [
   ["Ingest", "PDFs, scans, spreadsheets, drawings, email exports, and CMMS records enter a single intake queue."],
-  ["OCR + Parse", "Document AI extracts tables, handwriting, drawing callouts, tags, dates, units, and procedure sections."],
+    ["OCR + Parse", "Document intelligence extracts tables, handwriting, drawing callouts, tags, dates, units, and procedure sections."],
   ["Entity Link", "Equipment tags, lines, people, regulations, quality deviations, and work orders are normalized."],
   ["Graph Build", "A plant ontology connects assets, events, procedures, evidence, risks, and regulatory obligations."],
   ["Agents", "Copilot, RCA, compliance, and lessons-learned agents retrieve cited context at the point of need."],
@@ -254,7 +254,7 @@ let answers = {
   },
   lessons: {
     confidence: 81,
-    text: "The strongest lessons learned are about restart discipline. Similar failures and near misses recur when strainer checks are skipped after maintenance handover. AssetIQ should push SOP-CW-03 to the field app, require proof of strainer cleaning, and add supervisor sign-off for the first restart.",
+    text: "The strongest lessons learned are about restart discipline. Similar failures and near misses recur when strainer checks are skipped after maintenance handover. OpsBrain should push SOP-CW-03 to the field app, require proof of strainer cleaning, and add supervisor sign-off for the first restart.",
     citations: ["NM-2025-14: prior high-vibration restart near miss", "WO-8841: current repeat seal failure", "SOP-CW-03: required startup checks"],
   },
   capa: {
@@ -597,7 +597,7 @@ async function askCopilot(query) {
       });
       answer = payload.answer || answer;
       retrievedDocuments = payload.retrievedDocuments || [];
-      source = payload.servedBy || "AssetIQ backend";
+      source = payload.servedBy || "OpsBrain backend";
       setBackendStatus("online", "Backend online");
     } catch (error) {
       setBackendStatus("offline", "Demo fallback");

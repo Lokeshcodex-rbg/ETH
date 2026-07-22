@@ -1,10 +1,10 @@
-# AssetIQ Brain
+# OpsBrain
 
-AI-powered Industrial Knowledge Intelligence prototype for a unified asset and operations brain.
+Industrial Knowledge Intelligence prototype for a unified asset and operations brain.
 
 ## Working Prototype
 
-Run the full-stack app here:
+Run the full-stack app in VS Code or any terminal:
 
 ```bash
 cd outputs/industrial-knowledge-brain
@@ -12,6 +12,10 @@ npm start
 ```
 
 Then open `http://127.0.0.1:4180/index.html`.
+
+On Windows, you can also double-click:
+
+`outputs/industrial-knowledge-brain/run.bat`
 
 The prototype includes:
 
@@ -32,8 +36,10 @@ The prototype includes:
 - `outputs/industrial-knowledge-brain/backend/server.js` - zero-install Node backend
 - `outputs/industrial-knowledge-brain/backend/data-store.js` - in-memory industrial knowledge store
 - `outputs/industrial-knowledge-brain/package.json` - start/check scripts
+- `outputs/industrial-knowledge-brain/.vscode/tasks.json` - VS Code run task
+- `outputs/industrial-knowledge-brain/run.bat` - Windows launcher
 - `outputs/industrial-knowledge-brain/architecture.md` - architecture notes
-- `outputs/industrial-knowledge-brain/AssetIQ-Brain-Pitch-Deck.pptx` - pitch deck
+- `outputs/industrial-knowledge-brain/OpsBrain-Pitch-Deck.pptx` - pitch deck
 - `outputs/industrial-knowledge-brain/demo-video-script.md` - demo video script
 
 ## Demo Flow

@@ -1,6 +1,6 @@
-# AssetIQ Brain Prototype
+# OpsBrain Prototype
 
-Run the backend to use the full working prototype:
+Run the backend to use the full working prototype in VS Code or any terminal:
 
 ```bash
 npm start
@@ -10,6 +10,8 @@ Then open `http://127.0.0.1:4180/index.html`.
 
 You can still open `index.html` directly as a static fallback, but the judged full-stack demo should use the backend URL.
 
+For Windows, you can also double-click `run.bat`.
+
 ## Included Deliverables
 
 - `index.html`, `styles.css`, `app.js`: working frontend
@@ -17,7 +19,9 @@ You can still open `index.html` directly as a static fallback, but the judged fu
 - `backend/data-store.js`: in-memory industrial knowledge data, graph links, agents, and ingestion logic
 - `package.json`: start/check scripts
 - `architecture.md`: architecture diagram and production design notes
-- `AssetIQ-Brain-Pitch-Deck.pptx`: presentation deck
+- `OpsBrain-Pitch-Deck.pptx`: presentation deck
+- `.vscode/tasks.json`: VS Code task to run the backend
+- `run.bat`: Windows one-click launcher
 - `pitch-deck.md`: editable deck outline
 - `demo-video-script.md`: recording script for a two-minute demo video
 

@@ -57,7 +57,7 @@ function parseBody(req) {
 function withTelemetry(payload) {
   return {
     ok: true,
-    servedBy: "AssetIQ Brain local backend",
+    servedBy: "OpsBrain local backend",
     generatedAt: new Date().toISOString(),
     ...payload,
   };
@@ -170,6 +170,15 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
+server.on("error", (error) => {
+  if (error.code === "EADDRINUSE") {
+    console.error(`Port ${port} is already in use. Set a different port with: PORT=4182 npm start`);
+    process.exit(1);
+  }
+  throw error;
+});
+
 server.listen(port, host, () => {
-  console.log(`AssetIQ Brain backend running at http://${host}:${port}`);
+  console.log(`OpsBrain backend running at http://${host}:${port}`);
+  console.log(`Open http://${host}:${port}/index.html`);
 });

@@ -1,4 +1,4 @@
-# AssetIQ Brain Architecture
+# OpsBrain Architecture
 
 ```mermaid
 flowchart LR
@@ -19,7 +19,7 @@ flowchart LR
 
 ## Prototype Scope
 
-AssetIQ Brain demonstrates the core hackathon idea without requiring private plant data or cloud keys:
+OpsBrain demonstrates the core hackathon idea without requiring private plant data or cloud keys:
 
 - Ingests representative industrial document types: P&ID, CMMS work order, OEM manual, inspection report, SOP, and regulatory checklist.
 - Extracts entities such as equipment tags, process instruments, failure modes, regulatory requirements, procedures, and maintenance observations.

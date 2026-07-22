@@ -6,7 +6,7 @@ Target length: 2 minutes.
 
 Show the command center.
 
-Voiceover: "AssetIQ Brain is a unified asset and operations brain for industrial teams. It connects drawings, work orders, SOPs, inspections, manuals, and compliance records into one queryable intelligence layer."
+Voiceover: "OpsBrain is a unified asset and operations brain for industrial teams. It connects drawings, work orders, SOPs, inspections, manuals, and compliance records into one queryable intelligence layer."
 
 ## Scene 2: Ingestion
 
@@ -40,4 +40,4 @@ Voiceover: "The compliance agent flags missing PI-204 calibration evidence again
 
 ## Close
 
-Voiceover: "AssetIQ Brain reduces search time, protects retiring expert knowledge, and helps industrial teams make safer, faster, evidence-backed decisions."
+Voiceover: "OpsBrain reduces search time, protects retiring expert knowledge, and helps industrial teams make safer, faster, evidence-backed decisions."

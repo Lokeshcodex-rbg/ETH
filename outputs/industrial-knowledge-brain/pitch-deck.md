@@ -1,4 +1,4 @@
-# AssetIQ Brain: Unified Asset & Operations Brain
+# OpsBrain: Unified Asset & Operations Brain
 
 ## 1. Problem
 
@@ -6,11 +6,11 @@ Industrial teams lose time and make riskier decisions because critical knowledge
 
 ## 2. Why Now
 
-AI document intelligence, retrieval-augmented generation, and knowledge graphs can finally connect structured and unstructured plant records into a trustworthy operational brain.
+Document intelligence, retrieval-augmented generation, and knowledge graphs can finally connect structured and unstructured plant records into a trustworthy operational brain.
 
 ## 3. Solution
 
-AssetIQ Brain ingests heterogeneous industrial records, extracts entities, builds an asset knowledge graph, and gives every role a cited copilot at the point of need.
+OpsBrain ingests heterogeneous industrial records, extracts entities, builds an asset knowledge graph, and gives every role a cited copilot at the point of need.
 
 ## 4. Core Demo
 
